@@ -63,8 +63,40 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       item.classList.toggle('open', !isOpen);
       a.style.maxHeight = !isOpen ? a.scrollHeight + 'px' : null;
+      q.setAttribute('aria-expanded', !isOpen ? 'true' : 'false');
     });
   });
+
+  /* Hero video pause/play toggle (accessibility: let users stop auto-playing motion) */
+  const heroVideo = document.querySelector('.hero-photo-band video');
+  const videoToggle = document.querySelector('.video-toggle');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (heroVideo) {
+    const setToggleLabel = (playing) => {
+      if (!videoToggle) return;
+      videoToggle.setAttribute('aria-label', playing ? 'השהה את הווידאו' : 'הפעל את הווידאו');
+      videoToggle.innerHTML = playing
+        ? '<svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>'
+        : '<svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"/></svg>';
+    };
+    if (reducedMotion.matches) {
+      heroVideo.pause();
+      setToggleLabel(false);
+    } else {
+      setToggleLabel(true);
+    }
+    if (videoToggle) {
+      videoToggle.addEventListener('click', () => {
+        if (heroVideo.paused) {
+          heroVideo.play();
+          setToggleLabel(true);
+        } else {
+          heroVideo.pause();
+          setToggleLabel(false);
+        }
+      });
+    }
+  }
 
   /* Quick pill contact forms (header/footer bands) — client-side only for now */
   document.querySelectorAll('.quick-form').forEach(form => {
