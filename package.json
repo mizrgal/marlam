@@ -1,0 +1,16 @@
+{
+  "name": "mrlam-vet-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "אתר מ.ר.ל.מ - מרכז רפואי לחיות מחמד, פולג נתניה",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
